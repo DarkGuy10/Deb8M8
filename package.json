@@ -1,0 +1,23 @@
+{
+  "name": "deb8m8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarkGuy10/Deb8M8.git"
+  },
+  "author": "@DarkGuy10, @DallasOnBackup",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DarkGuy10/Deb8M8/issues"
+  },
+  "homepage": "https://github.com/DarkGuy10/Deb8M8#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2"
+  }
+}
