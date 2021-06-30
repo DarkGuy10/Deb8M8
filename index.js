@@ -26,12 +26,20 @@ server.listen(3000, () => {
 
 io.on('connection', socket => {	
     
-	socket.on("requestDebate", title => {
-		if(!debates.has(title)){
+	socket.on("requestDebate", request => {
+		if(!debates.has(request.title)){
             socket.emit('requestDebateResponse', {error: 'Debate doesnt exist!'});
             return;
         }
-        socket.emit('requestDebateResponse', debates.get(title));
+        const debate = debates.get(request.title);
+        const debateInfo = {
+            title: debate.title,            
+            createdTimestamp : debate.createdTimestamp,
+            debaters: debate.debaters,
+            comments: debate.comments.slice(-request.limit) || debate.comments
+
+        };
+        socket.emit('requestDebateResponse', debateInfo);
 	});
 	
 	socket.on("createDebate", data => {

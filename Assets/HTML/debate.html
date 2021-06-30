@@ -23,12 +23,13 @@
         }
 
         #leftPane {
-            width: calc(100% - 275px);
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         #rightPane {
+            flex-shrink: 0;
             width: 275px;
             height: 100%;
             padding: 20px;
@@ -45,11 +46,13 @@
             font-size: 25px;
             font-family: Helvetica;
             overflow-x: hidden;
+            flex-shrink: 0;
         }
 
         #commentThreadArea{
             background-color: #252525;
             flex-grow: 1;
+            overflow-y: scroll;
         }
 
         .comment {
@@ -83,6 +86,7 @@
             height: 50px;
             padding: 15px;
             padding-top: 0;
+            flex-shrink: 0;
         }
 
         #commentField {
@@ -165,8 +169,8 @@
 			window.location.assign('/signup');
 
         const socket = io();
-        const debateName = window.location.pathname.slice(3)
-        socket.emit('requestDebate', debateName);
+        const debateName = window.location.pathname.slice(3);
+        socket.emit('requestDebate', {title:debateName, limit: 100});
 
         const commentField = document.querySelector('#commentField');
         commentField.addEventListener('keyup', event => {
@@ -186,7 +190,7 @@
                 return;
             }
             if(comment.debate != debateName) return; // Need to fix this using rooms
-            createComment(comment);
+            printComment(comment);
         });
 
         socket.on('newDebaterResponse', debater => {
@@ -206,10 +210,16 @@
                 listElement.innerHTML = debater;
                 document.querySelector('#debaterList').appendChild(listElement);
             }
+            for(const comment of debate.comments) {
+                printComment(comment);
+            }
         });
 
-        const createComment = (comment) => {
+        const printComment = (comment) => {
             const commentArea = document.querySelector('#commentThreadArea');
+            const fullyScrolled = commentArea.scrollTop + commentArea.clientHeight >= commentArea.scrollHeight;
+            console.log(commentArea.scrollTop);
+            console.log(commentArea.scrollHeight);
 
             const contentDiv = document.createElement('div');
             contentDiv.innerHTML = comment.content;
@@ -220,13 +230,15 @@
                 const lastCommentAuthor = lastCommentDiv.querySelector('.author').innerHTML;
                 if(lastCommentAuthor == comment.author){
                     lastCommentDiv.appendChild(contentDiv);
+                    if(fullyScrolled)
+                        commentArea.scrollTo(0, commentArea.scrollHeight);
                     return;
                 }
             }
 
             const commentDiv = document.createElement('div');
             commentDiv.classList.add('comment');
-    
+
             const authorDiv = document.createElement('div');
             authorDiv.innerHTML = comment.author;
             authorDiv.classList.add('author');
@@ -235,6 +247,10 @@
             commentDiv.appendChild(contentDiv);
 
             commentArea.appendChild(commentDiv);
+
+            //Now to fix autoscroll
+            if(fullyScrolled)
+                commentArea.scrollTo(0, commentArea.scrollHeight);
         };
 
     </script>
