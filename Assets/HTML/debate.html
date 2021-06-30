@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        if(!window.localStorage.getItem('logged'))
+			window.location.assign('/signup');
+
+        const socket = io();
+        socket.emit('requestDebate', window.location.pathname.slice(3));
+
+        socket.on('requestDebateResponse', debate => {
+            if(debate.error){
+                alert(`Error : ${debate.error}`);
+                return;
+            }
+            document.write(debate);
+        });
+    </script>
+</body>
+</html>

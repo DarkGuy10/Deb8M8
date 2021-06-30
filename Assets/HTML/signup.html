@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Deb8M8 | Create an Account!</title>
+	<meta charset="utf-8">
+	<style>
+        /*
+	
+	Just want to keep things tidy :D
+
+*/
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	padding: none;
+	margin: none;
+	background-color: #1e1e1e;
+}
+
+#boxWrapper {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #121212;
+	height: 250px;
+	width: 500px;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+#pfp {
+	height: 175px;
+	width: 175px;
+	border-radius: 100%;
+	border: 2px rgba(255, 255, 255, 0.2) solid;
+	background-color: #121212;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, -40%);
+}
+
+#userField {
+	display: block;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.1);
+	border-radius: 5px;
+	border-width: 0px;
+	color: white;
+	font-size: 17px;
+	padding: 9px 15px;
+	transform: translate(0, -50px);
+}
+
+#submit {
+	display: block;
+	width: 100%;
+	position: relative;
+	background-color: rgba(65, 105, 225, 0.8);
+	border-radius: 5px;
+	border-width: 0px;
+	color: whitesmoke;
+	font-size: 17px;
+	padding: 9px 15px;
+	transform: translate(0, -35px);
+}
+
+#submit:hover {
+	background-color: rgba(65, 105, 225, 0.7);
+	color: white;
+}
+
+@keyframes redglow {
+    0% {border:1px transparent solid}
+    50% {border:1px red solid}
+    100% {border:1px transparent solid}
+}
+    </style>
+</head>
+<body>
+	<div id="boxWrapper">
+		<form name="signupForm" id="signupForm">
+			<img src="./Assets/Images/default_pfp.png" id="pfp">
+			<input type="text" name="username" placeholder="Enter username" required="true" id="userField">
+			<button id="submit">Create account!</button>
+		</form>
+	</div>
+    <script src="/socket.io/socket.io.js"></script>
+	<script>
+		if(window.localStorage.getItem('logged'))
+			window.location.assign('/');
+        const socket = io();
+        const userField = document.querySelector('#userField');
+        const form = document.querySelector('form');
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            socket.emit('createUser', userField.value);
+        });
+        socket.on('createUserResponse', user => {
+            if(user.error){
+                alert(`Error : ${user.error}`);
+                return;
+            }
+            window.localStorage.setItem('token', user.token);
+			window.localStorage.setItem('username', user.username);
+			window.localStorage.setItem('discriminator', user.discriminator);
+			window.localStorage.setItem('tag', `${user.username}#${user.discriminator}`);
+			window.localStorage.setItem('logged', true);
+            alert('Signup Success!');
+			window.location.assign('/');
+        });
+
+    </script>
+</body>
+</html>
