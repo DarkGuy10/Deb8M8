@@ -42,13 +42,29 @@ io.on('connection', socket => {
             return;
         }
         const debateInfo = {
+            title: title,
             createdTimestamp : new Date().getTime(),
-            contributers: [],
+            debaters: [],
             comments: []
         }
         debates.set(title, debateInfo);
         socket.emit('createDebateResponse', title);
         
+    });
+
+    socket.on('createComment', data => {
+        if(users.get(data.comment.author).token != data.token){
+            socket.emit('createCommentResponse', {error:'Invald user token!'});
+            return;
+        }
+        data.comment.createdTimestamp = new Date().getTime();
+        debates.push(`${data.comment.debate}.comments`, data.comment);
+        if(!debates.get(data.comment.debate).debaters.includes(data.comment.author)){
+            debates.push(`${data.comment.debate}.debaters`, data.comment.author);
+            users.push(`${data.comment.author}.debaterOf`, data.comment.debate);
+            io.emit('newDebaterResponse', data.comment.author);
+        }
+        io.emit('createCommentResponse', data.comment);
     });
 
     socket.on('createUser', username => {
@@ -71,7 +87,7 @@ io.on('connection', socket => {
             username: username,
             discriminator: discriminator,
             createdTimestamp: new Date().getTime(),
-            contributerOf: [], //Array of debates
+            debaterOf: [], //Array of debates
         }
         users.set(tag, userInfo);
         socket.emit('createUserResponse', userInfo);

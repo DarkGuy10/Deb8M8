@@ -82,7 +82,7 @@
             if(!createField.value)
                 return;
             const data = {
-                title: createField.value.toLowerCase(),
+                title: createField.value.toLowerCase().trim(),
             }
             socket.emit('createDebate', data);
         });
