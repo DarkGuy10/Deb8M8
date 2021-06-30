@@ -1,7 +1,6 @@
 const app = require('express')()
 const server = require('http').Server(app)
-const { Server } = require('socket.io')
-const io = new Server(server)
+const io = require('socket.io')(server)
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
