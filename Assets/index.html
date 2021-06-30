@@ -1,0 +1,70 @@
+<!--        This site is served when client hits `/` (website root)       -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /*
+            
+            Just want to keep things tidy :D
+        */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: none;
+            margin: none;
+            background-color: #1e1e1e;
+        }
+
+        #wrapper {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: row;
+        }
+
+        #search {
+            width:50vw;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            border-width: 0px;
+            color: white;
+            font-size: 17px;
+            padding: 9px 15px;
+        }
+
+        #submit {
+            background-color: rgba(65, 105, 225, 0.8);
+            border-radius: 5px;
+            border-width: 0px;
+            color: whitesmoke;
+            font-size: 17px;
+            padding: 9px 15px;
+        }
+
+        #submit:hover {
+            background-color: rgba(65, 105, 225, 0.7);
+            color: white;
+        }
+
+    </style>
+    <title>Deb8M8 | alpha version</title>
+</head>
+<body>
+    
+    <div id="wrapper">
+		<input type="text" name="search" placeholder="Search a debate title..." required="true" id="search">
+		<button id="submit">Go</button>
+	</div>
+
+    <script>
+
+    </script>
+</body>
+</html>
