@@ -26,11 +26,9 @@ body {
 	padding: 10px;
 }
 
-#pfp {
+#logo {
 	height: 175px;
 	width: 175px;
-	border-radius: 100%;
-	border: 2px rgba(255, 255, 255, 0.2) solid;
 	background-color: #121212;
 	position: relative;
 	left: 50%;
