@@ -1,6 +1,3 @@
-if(!window.localStorage.getItem('logged'))
-    window.location.assign(`/signup?redirect=${window.location.pathname}`);
-
 const debateName = window.location.pathname.slice(3);
 const commentField = document.querySelector('#commentField');
 const loggedUser = window.localStorage.getItem('tag');
@@ -91,8 +88,6 @@ socket.on('requestDebateResponse', debate => {
 const printComment = (comment) => {
     const commentArea = document.querySelector('#commentThreadArea');
     const fullyScrolled = commentArea.scrollTop + commentArea.clientHeight >= commentArea.scrollHeight;
-    console.log(commentArea.scrollTop);
-    console.log(commentArea.scrollHeight);
 
     const contentDiv = document.createElement('div');
     contentDiv.innerHTML = comment.content;

@@ -8,7 +8,8 @@ body {
 
 #wrapper {
     height: 100%; width: 100%;
-    position: fixed; top: 0; left: 0;
+    position: fixed; top: 0; left: 0px;
+    z-index: 1;
     display: flex;
     flex-direction: row;
 }
@@ -122,4 +123,9 @@ body {
 }
 .typingIndicator {
     display: none;
+}
+
+/* Overwrites for common.js */
+#sideNav {
+    position: unset;
 }

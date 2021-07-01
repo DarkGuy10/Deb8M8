@@ -6,17 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/CSS/index.css">
+    <link rel="stylesheet" href="/CSS/common.css">
+    <script src="https://kit.fontawesome.com/2abdcfcbfc.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="/Assets/logo.png" type="image/x-icon">
     <title>Deb8M8 | alpha version</title>
+    <script src="/JS/checkLogin.js"></script>
 </head>
 <body>
-    
+    <div id="sideNav">
+        <a href="/"><img src="/Assets/logo.png" alt="logo"></a>
+        <ul class="reverseFloat">
+            <li><i class="fas fa-user-circle fa-2x fa-fw"></i><span class="tooltip" id="userTooltip"></span></li>
+            <li><i class="fas fa-sign-out-alt fa-2x fa-fw" id="logout"></i><span class="tooltip">Logout</span></li>
+        </ul>
+    </div>
+
     <div id="wrapper">
-		<input type="text" name="search" placeholder="Search a debate title..." id="searchField" class="inputField">
-		<button id="searchBtn" class="btn">Go</button>
-        <input type="text" name="create" placeholder="Create a new debate..." id="createField" class="inputField">
-		<button id="createBtn" class="btn">Go</button>
+        <a href="/"><img src="/Assets/watermark.png" alt="watermark" class="watermark"></a>
+
+        <div id="searchWrapper">
+            <input type="text" name="search" placeholder="Search a debate title..." id="searchField" class="inputField">
+            <button id="searchBtn" class="btn"><i class="fas fa-search fa-fw"></i></button>
+        </div>
+        <div id="createWrapper">
+            <input type="text" name="create" placeholder="Create a new debate" id="createField" class="inputField">
+            <button id="createBtn" class="btn createBtn">Can't find one? Create a new debate!</button>
+        </div>
 	</div>
 
+
+    <script src="/JS/common.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/JS/index.js"></script>
 </body>

@@ -1,0 +1,44 @@
+#sideNav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 50px; height: 100%;
+    background-color: #121212;
+    flex-shrink: 0;
+}
+
+#sideNav a img{
+    margin: 0;
+    padding: 3px;
+    width: 100%;
+}
+
+.reverseFloat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: fixed; bottom: 0;
+}
+
+.reverseFloat li {
+    padding: 9px 5px;
+}
+
+.reverseFloat li i:hover {
+    color: rgba(65, 105, 225, 0.7);
+}
+
+.tooltip {
+    display: none;
+    background-color: #121212;
+    color: rgba(65, 105, 225, 0.7);
+    padding: 7px 14px;
+    position: relative;
+    bottom: 6px;
+    z-index: 3;
+    font-family: 'Noto Sans';
+    border-radius: 4px;
+}
+@keyframes slide-fade {
+    0%   {opacity: 0.5; left: 15px;}
+    100% {opacity: 1; left: 10px;}
+}
