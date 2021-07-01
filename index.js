@@ -25,21 +25,35 @@ server.listen(32120, () => {
 })
 
 
-io.on('connection', socket => {	    
+io.on('connection', socket => {	   
+    socket.on('disconnecting', () => {
+        for(const room of socket.rooms){
+            io.to(room).emit('typingChangeResponse', {typing:false, user:socket.user});
+            io.to(room).emit('offlineDebaterResponse', socket.user);
+        }
+    });
+    
 	socket.on("requestDebate", request => {
 		if(!debates.has(request.title)){
             socket.emit('requestDebateResponse', {error: 'Debate doesnt exist!'});
             return;
         }
         socket.join(request.title); //creating socket rooms based on debate title
+        socket.user = request.user; //saving user in the socket
         const debate = debates.get(request.title);
+        const onlineUsers = [];
+        for(const socket of io.of(`/`).sockets.values()){
+            if(socket.rooms.has(debate.title))
+                onlineUsers.push(socket.user);
+        }
         const debateInfo = {
             title: debate.title,            
             createdTimestamp : debate.createdTimestamp,
-            debaters: debate.debaters,
-            comments: debate.comments.slice(-request.limit) || debate.comments
-
+            comments: debate.comments.slice(-request.limit) || debate.comments,
+            typingUsers: debate.typingUsers,
+            online: onlineUsers
         };
+        socket.to(request.title).emit('onlineDebaterResponse', request.user);
         socket.emit('requestDebateResponse', debateInfo);
 	});
 	
@@ -54,7 +68,8 @@ io.on('connection', socket => {
             title: title,
             createdTimestamp : new Date().getTime(),
             debaters: [],
-            comments: []
+            comments: [],
+            typingUsers: []
         }
         debates.set(title, debateInfo);
         socket.emit('createDebateResponse', title);
@@ -71,9 +86,20 @@ io.on('connection', socket => {
         if(!debates.get(data.comment.debate).debaters.includes(data.comment.author)){
             debates.push(`${data.comment.debate}.debaters`, data.comment.author);
             users.push(`${data.comment.author}.debaterOf`, data.comment.debate);
-            io.to(data.comment.debate).emit('newDebaterResponse', data.comment.author);
         }
         io.to(data.comment.debate).emit('createCommentResponse', data.comment);
+    });
+
+    socket.on('typingChange', data => {
+        if(users.get(data.user).token != data.token){
+            socket.emit('typingChangeResponse', {error:'Invald user token!'});
+            return;
+        }
+        if(data.typing && !debates.get(data.debate).typingUsers.includes(data.user))
+            debates.push(`${data.debate}.typingUsers`, data.user);
+        else if(!data.typing && debates.get(data.debate).typingUsers.includes(data.user))
+            debates.set(`${data.debate}.typingUsers`, debates.get(`${data.debate}.typingUsers`).filter(user => user != data.user));
+        socket.to(data.debate).emit('typingChangeResponse', {typing:data.typing, user:data.user});
     });
 
     socket.on('createUser', username => {

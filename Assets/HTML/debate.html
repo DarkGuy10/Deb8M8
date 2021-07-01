@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/2abdcfcbfc.js" crossorigin="anonymous"></script>
     <title></title>
 
     <style>
@@ -129,7 +130,9 @@
         #debaterList li:hover {
             background-color: rgba(0, 0, 0, 0.1);
         }
-
+        .typingIndicator {
+            display: none;
+        }
 
     </style>
 
@@ -168,11 +171,47 @@
         if(!window.localStorage.getItem('logged'))
             window.location.assign(`/signup?redirect=${window.location.pathname}`);
 
-        const socket = io();
         const debateName = window.location.pathname.slice(3);
-        socket.emit('requestDebate', {title:debateName, limit: 100});
-
         const commentField = document.querySelector('#commentField');
+        const loggedUser = window.localStorage.getItem('tag');
+
+        const socket = io();
+        socket.emit('requestDebate', {title:debateName, limit: 100, user:loggedUser});
+
+        // Typing indicator:
+        let typing = false;
+        let stopTypingTimeout;
+        
+        commentField.addEventListener('input', event => {
+            if(!typing){
+                typing = true;
+                socket.emit('typingChange', {typing:typing, debate:debateName, user:loggedUser, token:localStorage.getItem('token')});
+                addTypingIndicator(loggedUser);
+            }
+            if(stopTypingTimeout)
+                clearTimeout(stopTypingTimeout);
+            stopTypingTimeout = setTimeout(stopTyping, 4000);
+        });
+
+        const stopTyping = () => {
+            typing = false;            
+            socket.emit('typingChange', {typing:typing, debate:debateName, user:loggedUser, token:localStorage.getItem('token')});
+            clearInterval(stopTypingTimeout);
+            removeTypingIndicator(loggedUser);
+        }
+
+        socket.on('typingChangeResponse', data => {
+            if(data.error){
+                alert(`Error : ${data.error}`);
+                return;
+            }
+            if(data.typing)
+                addTypingIndicator(data.user);
+            else
+                removeTypingIndicator(data.user);
+        });
+                        
+        // Send msg
         commentField.addEventListener('keyup', event => {
             if(event.key != 'Enter' || !commentField.value.trim()) return;
             const comment = {
@@ -181,6 +220,7 @@
                 content: commentField.value.trim()
             }
             socket.emit('createComment', {token:localStorage.getItem('token'), comment:comment});
+            stopTyping();
             commentField.value = "";
         });
 
@@ -192,10 +232,12 @@
             printComment(comment);
         });
 
-        socket.on('newDebaterResponse', debater => {
-            const listElement = document.createElement('li');
-            listElement.innerHTML = debater;
-            document.querySelector('#debaterList').appendChild(listElement);
+        socket.on('onlineDebaterResponse', debater => {
+            showOnline(debater);
+        });
+
+        socket.on('offlineDebaterResponse', debater => {
+            hideOffline(debater);
         });
 
         socket.on('requestDebateResponse', debate => {
@@ -204,13 +246,15 @@
                 return;
             }
             document.querySelector('#topicBox').innerHTML = decodeURI(debate.title);
-            for(const debater of debate.debaters) {
-                const listElement = document.createElement('li');
-                listElement.innerHTML = debater;
-                document.querySelector('#debaterList').appendChild(listElement);
+            
+            for(const debater of debate.online) {
+                showOnline(debater);
             }
             for(const comment of debate.comments) {
                 printComment(comment);
+            }
+            for(const typingUser of debate.typingUsers) {
+                addTypingIndicator(typingUser);
             }
         });
 
@@ -251,6 +295,28 @@
             if(fullyScrolled)
                 commentArea.scrollTo(0, commentArea.scrollHeight);
         };
+
+        const showOnline = (debater) => {
+            const listElement = document.createElement('li');
+            listElement.innerHTML = `<i class="fas fa-spinner fa-pulse typingIndicator"></i> ${debater}`;
+            listElement.setAttribute('data-debater', debater);
+            document.querySelector('#debaterList').appendChild(listElement);
+        };
+
+        const hideOffline = (debater) => {
+            const listElement = document.querySelector(`[data-debater='${debater}']`);
+            listElement.remove();
+        };
+
+        const addTypingIndicator = (debater) => {
+            const indicator = document.querySelector(`[data-debater='${debater}'] i`);
+            indicator.style.display = 'inline-block';
+        }
+
+        const removeTypingIndicator = (debater) => {
+            const indicator = document.querySelector(`[data-debater='${debater}'] i`);
+            indicator.style.display = 'none';
+        }
 
     </script>
 </body>
