@@ -1,0 +1,68 @@
+/*
+	
+	Just want to keep things tidy :D
+
+*/
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	padding: none;
+	margin: none;
+	background-color: #1e1e1e;
+}
+
+#boxWrapper {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #121212;
+	height: 250px;
+	width: 500px;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+#pfp {
+	height: 175px;
+	width: 175px;
+	border-radius: 100%;
+	border: 2px rgba(255, 255, 255, 0.2) solid;
+	background-color: #121212;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, -40%);
+}
+
+#userField {
+	display: block;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.1);
+	border-radius: 5px;
+	border-width: 0px;
+	color: white;
+	font-size: 17px;
+	padding: 9px 15px;
+	transform: translate(0, -50px);
+}
+
+#submit {
+	display: block;
+	width: 100%;
+	position: relative;
+	background-color: rgba(65, 105, 225, 0.8);
+	border-radius: 5px;
+	border-width: 0px;
+	color: whitesmoke;
+	font-size: 17px;
+	padding: 9px 15px;
+	transform: translate(0, -35px);
+}
+
+#submit:hover {
+	background-color: rgba(65, 105, 225, 0.7);
+	color: white;
+}

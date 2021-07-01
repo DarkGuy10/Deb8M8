@@ -1,0 +1,23 @@
+<!--        This site is served when client hits `/` (website root)       -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/index.css">
+    <title>Deb8M8 | alpha version</title>
+</head>
+<body>
+    
+    <div id="wrapper">
+		<input type="text" name="search" placeholder="Search a debate title..." id="searchField" class="inputField">
+		<button id="searchBtn" class="btn">Go</button>
+        <input type="text" name="create" placeholder="Create a new debate..." id="createField" class="inputField">
+		<button id="createBtn" class="btn">Go</button>
+	</div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/JS/index.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 const path = require('path');
-const app = require('express')();
+const express = require('express');
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const db = require('quick.db');
@@ -7,16 +8,18 @@ const db = require('quick.db');
 const debates = new db.table('debates');
 const users = new db.table('users');
 
+app.use(express.static(path.join(__dirname, '/public')));
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Assets/index.html'));
+  res.sendFile(path.join(__dirname, 'pages/index.html'));
 })
 
 app.get('/d/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Assets/HTML/debate.html'));
+    res.sendFile(path.join(__dirname, 'pages/debate.html'));
   })
 
 app.get('/signup*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Assets/HTML/signup.html'));
+    res.sendFile(path.join(__dirname, 'pages/signup.html'));
 })
 
 const port = 32120;
