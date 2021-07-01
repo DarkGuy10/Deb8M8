@@ -166,7 +166,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         if(!window.localStorage.getItem('logged'))
-			window.location.assign('/signup');
+            window.location.assign(`/signup?redirect=${window.location.pathname}`);
 
         const socket = io();
         const debateName = window.location.pathname.slice(3);

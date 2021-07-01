@@ -15,13 +15,13 @@ app.get('/d/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'Assets/HTML/debate.html'));
   })
 
-app.get('/signup', (req, res) => {
+app.get('/signup*', (req, res) => {
     res.sendFile(path.join(__dirname, 'Assets/HTML/signup.html'));
 })
 
-
+const port = 32120;
 server.listen(32120, () => {
-  console.log('Server Started on :3000!');
+  console.log(`Server Started on :${port}!`);
 })
 
 

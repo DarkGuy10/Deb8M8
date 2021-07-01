@@ -105,7 +105,8 @@ body {
 			window.localStorage.setItem('tag', `${user.username}#${user.discriminator}`);
 			window.localStorage.setItem('logged', true);
             alert('Signup Success!');
-			window.location.assign('/');
+			const redirect = window.location.search.substr(1).replace('redirect=', '') || '/';
+			window.location.assign(redirect);
         });
 
     </script>
