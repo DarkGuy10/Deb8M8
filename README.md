@@ -2,6 +2,5 @@
 
 To fix:
 ```
-1. io.emit the comments in separates rooms
-2. Debate search
+1. Debate search
 ```

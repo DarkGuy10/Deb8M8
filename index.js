@@ -24,13 +24,14 @@ server.listen(3000, () => {
   console.log('Server Started on :3000!');
 })
 
-io.on('connection', socket => {	
-    
+
+io.on('connection', socket => {	    
 	socket.on("requestDebate", request => {
 		if(!debates.has(request.title)){
             socket.emit('requestDebateResponse', {error: 'Debate doesnt exist!'});
             return;
         }
+        socket.join(request.title); //creating socket rooms based on debate title
         const debate = debates.get(request.title);
         const debateInfo = {
             title: debate.title,            
@@ -70,9 +71,9 @@ io.on('connection', socket => {
         if(!debates.get(data.comment.debate).debaters.includes(data.comment.author)){
             debates.push(`${data.comment.debate}.debaters`, data.comment.author);
             users.push(`${data.comment.author}.debaterOf`, data.comment.debate);
-            io.emit('newDebaterResponse', data.comment.author);
+            io.to(data.comment.debate).emit('newDebaterResponse', data.comment.author);
         }
-        io.emit('createCommentResponse', data.comment);
+        io.to(data.comment.debate).emit('createCommentResponse', data.comment);
     });
 
     socket.on('createUser', username => {
