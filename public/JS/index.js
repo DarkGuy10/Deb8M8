@@ -22,7 +22,7 @@ const createDebate = () => {
     if(!createField.value.trim())
         return;
     const data = {
-        title: createField.value.toLowerCase().trim(),
+        title: createField.value.trim(),
     }
     socket.emit('createDebate', data);
 };

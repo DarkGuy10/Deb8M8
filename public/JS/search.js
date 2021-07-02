@@ -5,11 +5,12 @@ if(!query)
 
 socket.emit('search', query);
 socket.on('searchResponse', matched => {
+    const h3 = document.querySelector('#searchResults h3');
     if(!matched.length){
-        document.querySelector('#searchResults h3').innerText = 'Your search yielded no result!';
+        h3.innerText = 'Your search yielded no result!';
         return;
     }
-
+    h3.innerText = 'Search Results';
     matched.sort((a, b) => { //based on number of matches
         return a.matches - b.matches;
     });
