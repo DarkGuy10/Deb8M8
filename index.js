@@ -53,8 +53,8 @@ io.on('connection', socket => {
             if(matches > 0){            
                 const onlineCount = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(title)).length;
                 const data = {
-                    title: debate.data.title,
-                    debaterCount: debate.data.debaters.length,
+                    title: debate.data.title || JSON.parse(debate.data).title,
+                    debaterCount: debate.data.debaterCount || JSON.parse(debate.data).debaterCount,
                     onlineCount: onlineCount 
                 }
                 matched.push({data:data, matches:matches});
@@ -92,6 +92,7 @@ io.on('connection', socket => {
         const debateInfo = {
             title: title,
             createdTimestamp : new Date().getTime(),
+            debaterCount: 0,
             debaters: [],
             comments: [],
             typingUsers: []
@@ -110,6 +111,7 @@ io.on('connection', socket => {
         debates.push(`${data.comment.debate}.comments`, data.comment);
         if(!debates.get(data.comment.debate).debaters.includes(data.comment.author)){
             debates.push(`${data.comment.debate}.debaters`, data.comment.author);
+            debates.add(`${data.comment.debate}.debaterCount`, 1);
             users.push(`${data.comment.author}.debaterOf`, data.comment.debate);
         }
         io.to(data.comment.debate).emit('createCommentResponse', data.comment);
