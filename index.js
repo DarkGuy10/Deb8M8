@@ -115,7 +115,7 @@ io.on('connection', socket => {
         const debateInfo = {
             title: title,
             createdTimestamp : new Date().getTime(),
-            debaterCount: 0,
+            debaterCount: 1,
             debaters: [data.user],
             comments: [],
             typingUsers: []
