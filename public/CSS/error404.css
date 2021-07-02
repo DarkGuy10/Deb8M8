@@ -1,0 +1,13 @@
+h3 {
+    padding: 9px 14px;
+    font-size: 19px;
+    font-family: 'Arial';
+    text-transform: uppercase;
+    color: #c4c4c4;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    display: block;
+    position: fixed;
+    top: 150px; left: 50%;
+    transform: translateX(-50%);
+}

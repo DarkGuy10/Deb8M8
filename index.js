@@ -26,6 +26,11 @@ app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages/signup.html'));
 })
 
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'pages/error404.html'));
+});
+
 const port = 32120;
 server.listen(32120, () => {
   console.log(`Server Started on :${port}!`);
@@ -64,8 +69,8 @@ io.on('connection', socket => {
     });
     
 	socket.on("requestDebate", request => {
-		if(!debates.has(request.title)){
-            socket.emit('requestDebateResponse', {error: 'Debate doesnt exist!'});
+		if(!request.title || !debates.has(request.title)){
+            socket.emit('requestDebateResponse', {error: 404});
             return;
         }
         socket.join(request.title); //creating socket rooms based on debate title

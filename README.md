@@ -2,6 +2,5 @@
 
 To fix:
 ```
-1. Debate search
-2. Home page has links to all debates you were part of
+1. Home page has links to all debates you were part of
 ```

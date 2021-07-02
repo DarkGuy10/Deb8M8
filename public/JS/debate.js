@@ -5,6 +5,24 @@ const loggedUser = window.localStorage.getItem('tag');
 const socket = io();
 socket.emit('requestDebate', {title:debateName, limit: 100, user:loggedUser});
 
+socket.on('requestDebateResponse', debate => {
+    if(debate.error && debate.error == 404){
+        window.location.assign('/error404'); //to serve 404
+        return;
+    }
+    document.querySelector('#topicBox').innerHTML = decodeURI(debate.title);
+    
+    for(const debater of debate.online) {
+        showOnline(debater);
+    }
+    for(const comment of debate.comments) {
+        printComment(comment);
+    }
+    for(const typingUser of debate.typingUsers) {
+        addTypingIndicator(typingUser);
+    }
+});
+
 // Typing indicator:
 let typing = false;
 let stopTypingTimeout;
@@ -65,24 +83,6 @@ socket.on('onlineDebaterResponse', debater => {
 
 socket.on('offlineDebaterResponse', debater => {
     hideOffline(debater);
-});
-
-socket.on('requestDebateResponse', debate => {
-    if(debate.error){
-        alert(`Error : ${debate.error}`);
-        return;
-    }
-    document.querySelector('#topicBox').innerHTML = decodeURI(debate.title);
-    
-    for(const debater of debate.online) {
-        showOnline(debater);
-    }
-    for(const comment of debate.comments) {
-        printComment(comment);
-    }
-    for(const typingUser of debate.typingUsers) {
-        addTypingIndicator(typingUser);
-    }
 });
 
 const printComment = (comment) => {

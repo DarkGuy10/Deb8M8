@@ -1,18 +1,3 @@
-/*
-    
-    Just want to keep things tidy :D
-*/
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    padding: none;
-    margin: none;
-    background-color: #1e1e1e;
-}
-
 #wrapper {
     position: absolute;
     left: 50%; top: 75px;
