@@ -49,6 +49,8 @@ const stopTyping = () => {
 socket.on('typingChangeResponse', data => {
     if(data.error){
         alert(`Error : ${data.error}`);
+        if(data.error === 'Invald user token!')
+            logout();
         return;
     }
     if(data.typing)
@@ -73,6 +75,8 @@ commentField.addEventListener('keyup', event => {
 socket.on('createCommentResponse', comment => {
     if(comment.error){
         alert(`Error : ${comment.error}`);
+        if(comment.error === 'Invald user token!')
+            logout();
         return;
     }
     printComment(comment);

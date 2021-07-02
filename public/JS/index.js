@@ -23,7 +23,8 @@ const createDebate = () => {
         return;
     const data = {
         title: createField.value.trim(),
-        user: window.localStorage.getItem('tag')
+        user: window.localStorage.getItem('tag'),
+        token: window.localStorage.getItem('token')
     }
     socket.emit('createDebate', data);
 };
@@ -34,6 +35,8 @@ socket.on('createDebateResponse', response => {
         if(response.error === 'Debate already exists!'){
             window.location.assign(`/d/${response.title}`);
         }
+        if(response.error === 'Invald user token!')
+            logout();
         return;
     }
     alert('Debate created!');
@@ -61,8 +64,14 @@ const search = () => {
 };
 
 // loading user's debates
-socket.emit('requestUserDebates', localStorage.getItem('tag'));
+socket.emit('requestUserDebates', {token:window.localStorage.getItem('token'), user: window.localStorage.getItem('tag')});
 socket.on('requestUserDebatesResponse', debates => {
+    if(debates.error){
+        alert(`Error : ${debates.error}`);
+        if(debates.error === 'Invald user token!')
+            logout();
+        return;
+    }
     const h3 = document.querySelector('#debatesWrapper h3');
     if(!debates.length){
         h3.innerText = 'Your debates will appear here';

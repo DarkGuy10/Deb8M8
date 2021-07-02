@@ -45,8 +45,12 @@ io.on('connection', socket => {
         }
     });
 
-    socket.on('requestUserDebates', user => {
-        const titles = users.get(`${user}.debaterOf`);
+    socket.on('requestUserDebates', data => {
+        if(!users.has(data.user) || users.get(data.user).token != data.token){
+            socket.emit('requestUserDebatesResponse', {error:'Invald user token!'});
+            return;
+        }
+        const titles = users.get(`${data.user}.debaterOf`);
         const userDebates = [];
         for(const title of titles){
             const debate = debates.get(title);
@@ -107,6 +111,10 @@ io.on('connection', socket => {
 	});
 	
 	socket.on("createDebate", data => {
+        if(!users.has(data.user) || users.get(data.user).token != data.token){
+            socket.emit('createDebateResponse', {error:'Invald user token!'});
+            return;
+        }
         const title = `${encodeURI(data.title)}`;
         if(debates.has(title)){
             socket.emit('createDebateResponse', {error: 'Debate already exists!', title:title});
@@ -127,7 +135,7 @@ io.on('connection', socket => {
     });
 
     socket.on('createComment', data => {
-        if(users.get(data.comment.author).token != data.token){
+        if(!users.has(data.comment.author) || users.get(data.comment.author).token != data.token){
             socket.emit('createCommentResponse', {error:'Invald user token!'});
             return;
         }
@@ -142,7 +150,7 @@ io.on('connection', socket => {
     });
 
     socket.on('typingChange', data => {
-        if(users.get(data.user).token != data.token){
+        if(!users.has(data.user) || users.get(data.user).token != data.token){
             socket.emit('typingChangeResponse', {error:'Invald user token!'});
             return;
         }

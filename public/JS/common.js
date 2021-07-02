@@ -1,7 +1,11 @@
 document.querySelector('#logout').addEventListener('click', () => {
+    logout();
+});
+
+const logout = () => {
     window.localStorage.clear();
     window.location.assign('/signup');
-});
+}
 
 const userTooltip = document.querySelector('#userTooltip');
 userTooltip.innerText = `Logged in as ${localStorage.getItem('tag')}`;
