@@ -71,7 +71,7 @@ io.on('connection', socket => {
         socket.join(request.title); //creating socket rooms based on debate title
         socket.user = request.user; //saving user in the socket
         const debate = debates.get(request.title);
-        const onlineUsers = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(title)).map(socket => socket.user);
+        const onlineUsers = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(request.title)).map(socket => socket.user);
         const debateInfo = {
             title: debate.title,            
             createdTimestamp : debate.createdTimestamp,
@@ -86,8 +86,7 @@ io.on('connection', socket => {
 	socket.on("createDebate", data => {
         const title = `${encodeURI(data.title)}`;
         if(debates.has(title)){
-            socket.emit('createDebateResponse', {error: 'Debate already exists!'});
-            console.log('copy');
+            socket.emit('createDebateResponse', {error: 'Debate already exists!', title:title});
             return;
         }
         const debateInfo = {

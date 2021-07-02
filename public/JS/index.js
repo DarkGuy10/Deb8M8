@@ -30,10 +30,13 @@ const createDebate = () => {
 socket.on('createDebateResponse', response => {
     if(response.error){
         alert(`Error : ${response.error}`);
+        if(response.error === 'Debate already exists!'){
+            window.location.assign(`/d/${response.title}`);
+        }
         return;
     }
     alert('Debate created!');
-    window.location.assign(`d/${response}`);
+    window.location.assign(`/d/${response}`);
 });
 
 
