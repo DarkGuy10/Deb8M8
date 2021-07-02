@@ -23,6 +23,7 @@ const createDebate = () => {
         return;
     const data = {
         title: createField.value.trim(),
+        user: localStorage.getItem('tag')
     }
     socket.emit('createDebate', data);
 };

@@ -116,11 +116,12 @@ io.on('connection', socket => {
             title: title,
             createdTimestamp : new Date().getTime(),
             debaterCount: 0,
-            debaters: [],
+            debaters: [data.user],
             comments: [],
             typingUsers: []
         }
         debates.set(title, debateInfo);
+        users.push(`${data.user}.debaterOf`, data.title);
         socket.emit('createDebateResponse', title);
         
     });
