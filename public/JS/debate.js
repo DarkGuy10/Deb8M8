@@ -11,6 +11,7 @@ socket.on('requestDebateResponse', debate => {
         return;
     }
     document.querySelector('#topicBox').innerHTML = decodeURI(debate.title);
+    document.title = decodeURI(debate.title);
     
     for(const debater of debate.online) {
         showOnline(debater);
