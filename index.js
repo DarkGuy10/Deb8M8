@@ -52,8 +52,8 @@ io.on('connection', socket => {
             const debate = debates.get(title);
             const onlineCount = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(title)).length;
             const data = {
-                title: debate.title || JSON.parse(debate).title,
-                debaterCount: debate.debaterCount || JSON.parse(debate).debaterCount,
+                title: debate.title,
+                debaterCount: debate.debaterCount,
                 onlineCount: onlineCount 
             }
             userDebates.push(data);
