@@ -107,6 +107,7 @@ body {
 #debaterList {
     list-style: none;
     padding: 0;
+    width: 100%;
 }
 
 #debaterList li{
@@ -116,6 +117,7 @@ body {
     user-select: none;
     border-radius: 3px;
     font-size: 14px;
+    overflow-x: hidden;
 }
 
 #debaterList li:hover {

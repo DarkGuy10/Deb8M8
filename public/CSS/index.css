@@ -25,9 +25,11 @@ body {
 
 .watermark {
     width: 100%;
+    flex-shrink: 0;
 }
 
 #searchWrapper, #createWrapper {
+    flex-shrink: 0;
     width: 65%;
     position: relative;
     left: 50%; transform: translateX(-50%);

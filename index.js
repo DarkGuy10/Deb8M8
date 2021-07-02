@@ -16,9 +16,13 @@ app.get('/', (req, res) => {
 
 app.get('/d/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages/debate.html'));
-  })
+})
 
-app.get('/signup*', (req, res) => {
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, 'pages/search.html'));
+})
+
+app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages/signup.html'));
 })
 
@@ -35,6 +39,29 @@ io.on('connection', socket => {
             io.to(room).emit('offlineDebaterResponse', socket.user);
         }
     });
+
+    socket.on('search', query => {
+        const querySplit = query.toLowerCase().split(/ +/);
+        const matched = [];
+        for(const debate of debates.all()){
+            const title = debate.ID.toLocaleLowerCase();
+            let matches = 0;
+            for(const each of querySplit){
+                if(title.includes(each))
+                    matches++;
+            }
+            if(matches > 0){            
+                const onlineCount = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(title)).length;
+                const data = {
+                    title: debate.data.title,
+                    debaterCount: debate.data.debaters.length,
+                    onlineCount: onlineCount 
+                }
+                matched.push({data:data, matches:matches});
+            }
+        }
+        socket.emit('searchResponse', matched);
+    });
     
 	socket.on("requestDebate", request => {
 		if(!debates.has(request.title)){
@@ -44,11 +71,7 @@ io.on('connection', socket => {
         socket.join(request.title); //creating socket rooms based on debate title
         socket.user = request.user; //saving user in the socket
         const debate = debates.get(request.title);
-        const onlineUsers = [];
-        for(const socket of io.of(`/`).sockets.values()){
-            if(socket.rooms.has(debate.title))
-                onlineUsers.push(socket.user);
-        }
+        const onlineUsers = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(title)).map(socket => socket.user);
         const debateInfo = {
             title: debate.title,            
             createdTimestamp : debate.createdTimestamp,

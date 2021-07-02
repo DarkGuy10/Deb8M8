@@ -35,3 +35,23 @@ socket.on('createDebateResponse', response => {
     alert('Debate created!');
     window.location.assign(`d/${response}`);
 });
+
+
+const searchField =  document.querySelector('#searchField');
+const searchBtn = document.querySelector('#searchBtn');
+
+searchBtn.addEventListener('click', event => {
+    event.preventDefault();
+    search();
+});
+
+searchField.addEventListener('keyup', event => {
+    if(event.key == 'Enter')
+        search();
+});
+
+const search = () => {
+    if(!searchField.value.trim())
+        return;
+    window.location.assign(`/search?query=${searchField.value.trim()}`);
+};

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search results</title>
+    <link rel="stylesheet" href="/CSS/index.css">
+    <link rel="stylesheet" href="/CSS/common.css">
+    <script src="https://kit.fontawesome.com/2abdcfcbfc.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/CSS/search.css">
+    <link rel="shortcut icon" href="/Assets/logo.png" type="image/x-icon">
+    <script src="/JS/checkLogin.js"></script>
+</head>
+<body>
+    <div id="sideNav">
+        <a href="/"><img src="/Assets/logo.png" alt="logo"></a>
+        <ul class="reverseFloat">
+            <li><i class="fas fa-user-circle fa-2x fa-fw"></i><span class="tooltip" id="userTooltip"></span></li>
+            <li><i class="fas fa-sign-out-alt fa-2x fa-fw" id="logout"></i><span class="tooltip">Logout</span></li>
+        </ul>
+    </div>
+
+    <div id="wrapper">
+        <div id="searchWrapper">
+            <input type="text" name="search" placeholder="Search a debate title..." id="searchField" class="inputField">
+            <button id="searchBtn" class="btn"><i class="fas fa-search fa-fw"></i></button>
+        </div>
+        <div id="searchResults">
+            <h3>Search Results</h3>
+            <ul>
+
+            </ul>
+        </div>
+	</div>
+
+    <script src="/JS/common.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/JS/search.js"></script>
+</body>
+</html>
