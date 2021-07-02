@@ -17,7 +17,7 @@ socket.on('searchResponse', matched => {
     const ul = document.querySelector('#searchResults ul');
     for(const debate of matched) {
         const li = document.createElement('li');
-        li.innerText = `/d/${debate.data.title}`;
+        li.innerText = `/d/${decodeURI(debate.data.title)}`;
         li.innerHTML += `<span class='userCounts'>online ${debate.data.onlineCount} / ${debate.data.debaterCount}</span`
         li.onclick = () => {
             window.location.assign(`/d/${debate.data.title}`);

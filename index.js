@@ -51,7 +51,7 @@ io.on('connection', socket => {
                     matches++;
             }
             if(matches > 0){            
-                const onlineCount = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(title)).length;
+                const onlineCount = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(debate.ID)).length;
                 const data = {
                     title: debate.data.title || JSON.parse(debate.data).title,
                     debaterCount: debate.data.debaterCount || JSON.parse(debate.data).debaterCount,
@@ -71,7 +71,8 @@ io.on('connection', socket => {
         socket.join(request.title); //creating socket rooms based on debate title
         socket.user = request.user; //saving user in the socket
         const debate = debates.get(request.title);
-        const onlineUsers = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(request.title)).map(socket => socket.user);
+        let onlineUsers = Array.from(io.of('/').sockets.values()).filter(socket => socket.rooms.has(request.title)).map(socket => socket.user);
+        onlineUsers = [...new Set(onlineUsers)]; // to prevent doubling
         const debateInfo = {
             title: debate.title,            
             createdTimestamp : debate.createdTimestamp,
@@ -79,7 +80,8 @@ io.on('connection', socket => {
             typingUsers: debate.typingUsers,
             online: onlineUsers
         };
-        socket.to(request.title).emit('onlineDebaterResponse', request.user);
+        if(!onlineUsers.includes(request.user)) //to prevent adding a double
+            socket.to(request.title).emit('onlineDebaterResponse', request.user);
         socket.emit('requestDebateResponse', debateInfo);
 	});
 	
