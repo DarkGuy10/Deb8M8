@@ -1,6 +1,6 @@
 #wrapper {
     position: absolute;
-    left: 50%; top: 75px;
+    left: 50%; top: 50px;
     transform: translateX(-50%);
     width: 60vw;
     display: flex;
@@ -11,48 +11,6 @@
 .watermark {
     width: 100%;
     flex-shrink: 0;
-}
-
-#searchWrapper, #createWrapper {
-    flex-shrink: 0;
-    width: 65%;
-    position: relative;
-    left: 50%; transform: translateX(-50%);
-    display: flex;
-    flex-direction: row;
-}
-
-.inputField {
-    flex-grow: 1;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    border-width: 0px;
-    color: white;
-    font-size: 15px;
-    padding: 8px 13px;
-    margin-top: 10px;
-}
-
-.inputField:focus {
-    outline: none;
-}
-
-.btn {
-    flex-shrink: 0;
-    background-color: rgba(65, 105, 225, 0.8);
-    border-radius: 4px;
-    border-width: 0px;
-    color: #e6e6e6;
-    font-size: 16px;
-    padding: 8px 13px;
-    margin-top: 10px;
-    margin-left: 5px;
-    text-transform: uppercase;
-}
-
-.btn:hover {
-    background-color: rgba(65, 105, 225, 0.7);
-    color: white;
 }
 
 #createField {

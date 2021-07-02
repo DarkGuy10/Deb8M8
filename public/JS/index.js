@@ -58,3 +58,24 @@ const search = () => {
         return;
     window.location.assign(`/search?query=${searchField.value.trim()}`);
 };
+
+// loading user's debates
+socket.emit('requestUserDebates', localStorage.getItem('tag'));
+socket.on('requestUserDebatesResponse', debates => {
+    const h3 = document.querySelector('#debatesWrapper h3');
+    if(!debates.length){
+        h3.innerText = 'Your debates will appear here';
+        return;
+    }
+    h3.innerText = 'Debates you have spoken in';
+    const ul = document.querySelector('#debatesWrapper ul');
+    for(const debate of debates) {
+        const li = document.createElement('li');
+        li.innerText = `/d/${decodeURI(debate.title)}`;
+        li.innerHTML += `<span class='userCounts'>online ${debate.onlineCount} / ${debate.debaterCount}</span`
+        li.onclick = () => {
+            window.location.assign(`/d/${debate.title}`);
+        };
+        ul.appendChild(li);
+    }
+});

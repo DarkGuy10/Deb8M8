@@ -2,5 +2,5 @@
 
 To fix:
 ```
-1. Home page has links to all debates you were part of
+... hell yeah ... we finally finiished the list
 ```
