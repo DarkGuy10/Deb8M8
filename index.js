@@ -105,8 +105,7 @@ io.on('connection', socket => {
             typingUsers: debate.typingUsers,
             online: onlineUsers
         };
-        if(!onlineUsers.includes(request.user)) //to prevent adding a double
-            socket.to(request.title).emit('onlineDebaterResponse', request.user);
+        socket.to(request.title).emit('onlineDebaterResponse', request.user);
         socket.emit('requestDebateResponse', debateInfo);
 	});
 	
