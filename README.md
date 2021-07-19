@@ -1,6 +1,8 @@
 # Deb8M8
 A real-time debate platform written in Node. <br>
 
+![image](https://user-images.githubusercontent.com/62807269/126097366-f7050d33-0dfe-430f-ad1a-03e2ac2da767.png)
+
 ## Installation
 ```
 git clone https://github.com/DarkGuy10/Deb8M8/
