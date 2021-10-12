@@ -31,9 +31,9 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages/error404.html'));
 });
 
-const port = 32120;
-server.listen(32120, () => {
-  console.log(`Server Started on :${port}!`);
+const port = 443;
+server.listen(port, () => {
+  console.log(`[ + ] Server Started on port ${port}`);
 })
 
 
