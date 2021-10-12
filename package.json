@@ -2,8 +2,9 @@
   "name": "deb8m8",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "web.js",
   "scripts": {
+    "start": "node web.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
