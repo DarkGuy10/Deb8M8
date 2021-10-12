@@ -31,7 +31,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages/error404.html'));
 });
 
-const port = 80;
+const port = process.env.PORT;
 server.listen(port, () => {
   console.log(`[ + ] Server Started on port ${port}`);
 })
